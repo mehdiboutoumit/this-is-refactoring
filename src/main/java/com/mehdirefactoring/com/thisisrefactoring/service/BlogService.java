@@ -47,10 +47,15 @@ public class BlogService {
     // If we add a new type of notification we need to apply the changes
     // in too many places
     public BlogPost publishBlogPost(BlogPost blogPost) {
+        // Magic Number code smell
+        if (blogPost.getContent().length() < 100) { // Magic number: 100
+            throw new IllegalArgumentException("Content must be at least 100 characters long");
+        }
         // Save the blog post
         BlogPost savedPost = blogPostRepository.save(blogPost);
 
-        // Explicitly call each notification method
+        // Lack of Separation of Concerns
+        // Explicitly call each notification method (Shotgun Surgery)
         notificationService.sendEmailNotification(savedPost);
         notificationService.sendSmsNotification(savedPost);
         notificationService.sendPushNotification(savedPost);

@@ -1,6 +1,8 @@
 package com.mehdirefactoring.com.thisisrefactoring.service;
 
 
+import com.mehdirefactoring.com.thisisrefactoring.auth.AuthenticationMethod;
+import com.mehdirefactoring.com.thisisrefactoring.auth.UsernamePasswordAuthentication;
 import com.mehdirefactoring.com.thisisrefactoring.model.User;
 import com.mehdirefactoring.com.thisisrefactoring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+
+    private AuthenticationMethod authenticationMethod = new UsernamePasswordAuthentication();
+
+
+    public boolean loginUser(String username, String password) {
+        return authenticationMethod.authenticate(username, password);
+    }
 
     // Method to create a User with duplicated validation logic
     public void createUser(String username, String email) {
