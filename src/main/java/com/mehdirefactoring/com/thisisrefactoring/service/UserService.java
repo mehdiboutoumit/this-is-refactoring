@@ -24,7 +24,6 @@ public class UserService {
 
     // Data clumps smell here: userId, username and email are usually passed together
     public void updateUser(Long userId, String username, String email) {
-        // Retrieve the user
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // Update the user details
