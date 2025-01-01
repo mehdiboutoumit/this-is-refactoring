@@ -1,5 +1,7 @@
 package com.mehdirefactoring.com.thisisrefactoring.model;
 
+
+// Data Class code smell
 public class Comment {
     private Long id;
     private Long blogPostId;
