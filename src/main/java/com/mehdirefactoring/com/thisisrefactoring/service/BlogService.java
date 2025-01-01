@@ -15,6 +15,9 @@ public class BlogService {
 
     // Long Method Smell: handling both creation and update logic in one method
     public void createOrUpdateBlogPost(BlogPost blogPost) {
+        if (blogPost.getTitle().length() > 100) {  // Duplicated logic for length validation
+            throw new IllegalArgumentException("Title cannot exceed 100 characters");
+        }
         if (blogPost.getId() == null) {
             blogPostRepository.save(blogPost);
         } else {
@@ -28,6 +31,16 @@ public class BlogService {
             }
         }
     }
+
+    // Feature envy: The service is directly manipulating the domain object
+    public void updateBlogPostAuthor(Long id, String author) {
+        BlogPost blogPost = blogPostRepository.findById(id).get();
+        blogPost.setAuthor(author);
+        blogPost.setViews(blogPost.getViews() + 10); // Feature envy: should be done in BlogPost class
+        blogPostRepository.save(blogPost);
+    }
+
+
 
     public List<BlogPost> getAllBlogs() {
         return blogPostRepository.findAll();

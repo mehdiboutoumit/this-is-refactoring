@@ -16,6 +16,7 @@ public class BlogPost {
     private String content;
     private String author;  // Primitive obsession: should be a more complex Author object
     private String category;  // Also a candidate for better structure
+    private int views;
 
     public BlogPost() {
     }
@@ -40,6 +41,8 @@ public class BlogPost {
         return category;
     }
 
+    public int getViews() {return views; }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -58,5 +61,9 @@ public class BlogPost {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
     }
 }
