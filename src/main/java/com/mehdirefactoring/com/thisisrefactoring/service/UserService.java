@@ -21,4 +21,15 @@ public class UserService {
         user.setEmail(email);
         userRepository.save(user);
     }
+
+    // Data clumps smell here: userId, username and email are usually passed together
+    public void updateUser(Long userId, String username, String email) {
+        // Retrieve the user
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        // Update the user details
+        user.setUsername(username);
+        user.setEmail(email);
+        userRepository.save(user);
+    }
 }

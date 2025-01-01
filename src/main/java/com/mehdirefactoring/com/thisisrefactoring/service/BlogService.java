@@ -13,6 +13,9 @@ public class BlogService {
     @Autowired
     private BlogPostRepository blogPostRepository;
 
+    @Autowired
+    private NotificationService notificationService;
+
     // Long Method Smell: handling both creation and update logic in one method
     public void createOrUpdateBlogPost(BlogPost blogPost) {
         if (blogPost.getTitle().length() > 100) {  // Duplicated logic for length validation
@@ -40,7 +43,20 @@ public class BlogService {
         blogPostRepository.save(blogPost);
     }
 
+    // Shotgun Surgery code smell
+    // If we add a new type of notification we need to apply the changes
+    // in too many places
+    public BlogPost publishBlogPost(BlogPost blogPost) {
+        // Save the blog post
+        BlogPost savedPost = blogPostRepository.save(blogPost);
 
+        // Explicitly call each notification method
+        notificationService.sendEmailNotification(savedPost);
+        notificationService.sendSmsNotification(savedPost);
+        notificationService.sendPushNotification(savedPost);
+
+        return savedPost;
+    }
 
     public List<BlogPost> getAllBlogs() {
         return blogPostRepository.findAll();
