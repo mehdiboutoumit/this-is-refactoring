@@ -63,6 +63,19 @@ public class BlogService {
         return savedPost;
     }
 
+    public BlogPost processAndSaveBlogPost(BlogPost blogPost) {
+        // Temporary field code smell
+        String temporaryState = formatBlogPostContent(blogPost);
+        blogPost.setContent(temporaryState);
+        return blogPostRepository.save(blogPost);
+    }
+
+    private String formatBlogPostContent(BlogPost blogPost) {
+        // Just an example of formatting logic
+        return blogPost.getContent().toUpperCase();
+    }
+
+
     public List<BlogPost> getAllBlogs() {
         return blogPostRepository.findAll();
     }
