@@ -11,7 +11,7 @@ public class BlogPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    //Primitive Obsession code smell
     private String title;  // Could be a custom Title class instead of String
     private String content;
     private String author;  // Primitive obsession: should be a more complex Author object
