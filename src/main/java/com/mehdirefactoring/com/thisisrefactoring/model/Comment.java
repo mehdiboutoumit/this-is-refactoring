@@ -1,14 +1,22 @@
 package com.mehdirefactoring.com.thisisrefactoring.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
 // Data Class code smell
 public class Comment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long blogPostId;
     private String author;
     private String content; // No validation for content
 
-    public Comment(Long id, Long blogPostId, String author, String content) {
+    public Comment() {}
+    public Comment(Long blogPostId, String author, String content) {
         this.id = id;
         this.blogPostId = blogPostId;
         this.author = author;

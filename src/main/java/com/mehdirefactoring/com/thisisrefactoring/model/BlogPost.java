@@ -6,6 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class BlogPost {
     @Id
@@ -17,8 +20,14 @@ public class BlogPost {
     private String author;  // Primitive obsession: should be a more complex Author object
     private String category;  // Also a candidate for better structure
     private int views;
+    private List<Comment> comments = new ArrayList<>();
 
     public BlogPost() {
+    }
+    public BlogPost(String title, String content, String author) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
     }
 
     public Long getId() {
@@ -65,5 +74,19 @@ public class BlogPost {
 
     public void setViews(int views) {
         this.views = views;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void displayPostDetails() {
+        System.out.println("Title: " + title);
+        System.out.println("Content: " + content);
+        System.out.println("Author: " + author);
     }
 }
