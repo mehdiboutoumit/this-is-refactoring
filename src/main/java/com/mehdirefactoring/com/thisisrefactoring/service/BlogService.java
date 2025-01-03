@@ -1,6 +1,5 @@
 package com.mehdirefactoring.com.thisisrefactoring.service;
 
-import com.mehdirefactoring.com.thisisrefactoring.model.valueobject.Author;
 import com.mehdirefactoring.com.thisisrefactoring.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,11 +50,10 @@ public class BlogService {
         blogPostRepository.save(existingPost);
     }
 
-    // Feature envy: The service is directly manipulating the domain object
-    public void updateBlogPostAuthor(Long id, Author author) {
+    // Move Function Refactoring technique
+    public void incrementBlogPostViews(Long id) {
         BlogPost blogPost = blogPostRepository.findById(id).get();
-        blogPost.setAuthor(author);
-        blogPost.setViews(blogPost.getViews() + 10); // Feature envy: should be done in BlogPost class
+        blogPost.incrementViews();
         blogPostRepository.save(blogPost);
     }
 

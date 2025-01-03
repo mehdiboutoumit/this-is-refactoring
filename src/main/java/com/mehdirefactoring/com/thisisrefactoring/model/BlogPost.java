@@ -76,6 +76,11 @@ public class BlogPost {
         this.views = views;
     }
 
+    // Move Function Refactoring technique
+    public void incrementViews() {
+        this.views += 10;  // Responsibility moved here
+    }
+
 //    public List<Comment> getComments() {
 //        return comments;
 //    }
