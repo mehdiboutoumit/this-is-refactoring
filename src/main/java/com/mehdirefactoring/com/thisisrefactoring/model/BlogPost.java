@@ -81,13 +81,22 @@ public class BlogPost {
         this.views += 10;  // Responsibility moved here
     }
 
-//    public List<Comment> getComments() {
-//        return comments;
-//    }
-//
-//    public void addComment(Comment comment) {
-//        comments.add(comment);
-//    }
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    // Encapsulate the behaviour in blogPost
+    public void addComment(String author, String content) {
+        Comment newComment = new Comment(this, author, content);
+        this.comments.add(newComment);
+    }
+    public void removeAllComments() {
+        this.comments.clear();
+    }
 
     public void displayPostDetails() {
         System.out.println("Title: " + title);

@@ -2,26 +2,28 @@ package com.mehdirefactoring.com.thisisrefactoring.model;
 
 import jakarta.persistence.*;
 
+// Added behaviour to avoid Data Class
 @Entity
-// Data Class code smell
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long blogPostId;
     private String author;
-    private String content; // No validation for content
+    private String content;
     @ManyToOne
-    @JoinColumn(name = "blog_post_id", referencedColumnName = "id", nullable = false)    private BlogPost blogPost;
+    @JoinColumn(name = "blog_post_id", referencedColumnName = "id", nullable = false)
+    private BlogPost blogPost;
 
     public Comment() {}
-    public Comment(Long blogPostId, String author, String content) {
-        this.id = id;
-        this.blogPostId = blogPostId;
-        this.author = author;
-        this.content = content;
+
+    // Constructor
+    public Comment(BlogPost blogPost, String author, String content) {
+        this.blogPost = blogPost;
+        setAuthor(author);   // Uses setter to add validation
+        setContent(content); // Uses setter to add validation
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -30,27 +32,32 @@ public class Comment {
         this.id = id;
     }
 
-    public Long getBlogPostId() {
-        return blogPostId;
+    public BlogPost getBlogPost() {
+        return blogPost;
     }
 
-    public void setBlogPostId(Long blogPostId) {
-        this.blogPostId = blogPostId;
+    public void setBlogPost(BlogPost blogPost) {
+        this.blogPost = blogPost;
     }
 
     public String getAuthor() {
         return author;
     }
 
+    // Added validation in setter for author
     public void setAuthor(String author) {
+        if (author == null || author.isEmpty()) {
+            throw new IllegalArgumentException("Author cannot be null or empty");
+        }
         this.author = author;
     }
 
-    public String getContent() {
-        return content;
-    }
-
+    // Added validation in setter for content
     public void setContent(String content) {
+        if (content == null || content.length() < 10) { // Example validation
+            throw new IllegalArgumentException("Content must be at least 10 characters long");
+        }
         this.content = content;
     }
+
 }
