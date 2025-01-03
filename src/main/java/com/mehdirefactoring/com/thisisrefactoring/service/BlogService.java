@@ -15,8 +15,7 @@ public class BlogService {
     @Autowired
     private BlogPostRepository blogPostRepository;
 
-    @Autowired
-    private NotificationService notificationService;
+
 
 
 
