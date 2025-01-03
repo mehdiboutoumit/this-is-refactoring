@@ -1,6 +1,7 @@
 package com.mehdirefactoring.com.thisisrefactoring.service;
 
 import com.mehdirefactoring.com.thisisrefactoring.model.valueobject.Author;
+import com.mehdirefactoring.com.thisisrefactoring.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mehdirefactoring.com.thisisrefactoring.model.BlogPost;
@@ -29,10 +30,9 @@ public class BlogService {
     }
 
     private void validateBlogPost(BlogPost blogPost) {
-        if (blogPost.getTitle().getValue().length() > 100) {
-            throw new IllegalArgumentException("Title cannot exceed 100 characters");
-        }
-    }
+        // Introduce Utility Method to avoid duplicated validation logic
+        ValidationUtil.validateStringLength(blogPost.getTitle().getValue(), 100,
+                "Title cannot exceed 100 characters");    }
 
     private void createBlogPost(BlogPost blogPost) {
         blogPostRepository.save(blogPost);

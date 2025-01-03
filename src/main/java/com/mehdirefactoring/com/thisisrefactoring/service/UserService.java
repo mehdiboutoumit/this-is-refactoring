@@ -5,6 +5,7 @@ import com.mehdirefactoring.com.thisisrefactoring.auth.AuthenticationMethod;
 import com.mehdirefactoring.com.thisisrefactoring.auth.UsernamePasswordAuthentication;
 import com.mehdirefactoring.com.thisisrefactoring.model.User;
 import com.mehdirefactoring.com.thisisrefactoring.repository.UserRepository;
+import com.mehdirefactoring.com.thisisrefactoring.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +22,12 @@ public class UserService {
         return authenticationMethod.authenticate(username, password);
     }
 
-    // Method to create a User with duplicated validation logic
+    // Introduce Utility Method to avoid duplicated validation logic
     public void createUser(String username, String email) {
-        if (username.length() > 50) {  // Duplicated logic for length validation
-            throw new IllegalArgumentException("Username cannot exceed 50 characters");
-        }
+
+        ValidationUtil.validateStringLength(username, 50,
+                "Username cannot exceed 50 characters");
+
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
