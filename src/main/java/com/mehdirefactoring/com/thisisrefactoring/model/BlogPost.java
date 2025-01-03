@@ -1,10 +1,9 @@
 package com.mehdirefactoring.com.thisisrefactoring.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.mehdirefactoring.com.thisisrefactoring.model.valueobject.Author;
+import com.mehdirefactoring.com.thisisrefactoring.model.valueobject.Title;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +13,18 @@ public class BlogPost {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //Primitive Obsession code smell
-    private String title;  // Could be a custom Title class instead of String
+    // Replace Primitive with Object Refactoring technique
+    private Title title;
     private String content;
-    private String author;  // Primitive obsession: should be a more complex Author object
-    private String category;  // Also a candidate for better structure
+    private Author author;
+    private String category;
     private int views;
+    @OneToMany(mappedBy = "blogPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     public BlogPost() {
     }
-    public BlogPost(String title, String content, String author) {
+    public BlogPost(Title title, String content, Author author) {
         this.title = title;
         this.content = content;
         this.author = author;
@@ -34,7 +34,7 @@ public class BlogPost {
         return id;
     }
 
-    public String getTitle() {
+    public Title getTitle() {
         return title;
     }
 
@@ -42,7 +42,7 @@ public class BlogPost {
         return content;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
@@ -56,7 +56,7 @@ public class BlogPost {
         this.id = id;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(Title title) {
         this.title = title;
     }
 
@@ -64,7 +64,7 @@ public class BlogPost {
         this.content = content;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -76,13 +76,13 @@ public class BlogPost {
         this.views = views;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void addComment(Comment comment) {
-        comments.add(comment);
-    }
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void addComment(Comment comment) {
+//        comments.add(comment);
+//    }
 
     public void displayPostDetails() {
         System.out.println("Title: " + title);

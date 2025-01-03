@@ -1,9 +1,6 @@
 package com.mehdirefactoring.com.thisisrefactoring.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 // Data Class code smell
@@ -14,6 +11,8 @@ public class Comment {
     private Long blogPostId;
     private String author;
     private String content; // No validation for content
+    @ManyToOne
+    @JoinColumn(name = "blog_post_id", referencedColumnName = "id", nullable = false)    private BlogPost blogPost;
 
     public Comment() {}
     public Comment(Long blogPostId, String author, String content) {

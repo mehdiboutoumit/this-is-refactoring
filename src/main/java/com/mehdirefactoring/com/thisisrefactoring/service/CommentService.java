@@ -30,14 +30,14 @@ public class CommentService {
     }
 
     // Insider Trading code smell
-    public void addCommentToBlogPost(BlogPost blogPost, String author, String content) {
-        // Accessing and modifying BlogPost's internal state directly
-        Comment newComment = new Comment(blogPost.getId(),author, content);
-        blogPost.getComments().add(newComment); // Insider Trading: Knows too much about BlogPost
-    }
+//    public void addCommentToBlogPost(BlogPost blogPost, String author, String content) {
+//        // Accessing and modifying BlogPost's internal state directly
+//        Comment newComment = new Comment(blogPost.getId(),author, content);
+//        blogPost.getComments().add(newComment); // Insider Trading: Knows too much about BlogPost
+//    }
 
-    public void deleteAllComments(BlogPost blogPost) {
-        blogPost.getComments().clear(); // Insider Trading: Modifies internal details of BlogPost
-    }
+//    public void deleteAllComments(BlogPost blogPost) {
+//        blogPost.getComments().clear(); // Insider Trading: Modifies internal details of BlogPost
+//    }
 }
 

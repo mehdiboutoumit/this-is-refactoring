@@ -1,5 +1,6 @@
 package com.mehdirefactoring.com.thisisrefactoring.service;
 
+import com.mehdirefactoring.com.thisisrefactoring.model.valueobject.Author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mehdirefactoring.com.thisisrefactoring.model.BlogPost;
@@ -18,7 +19,7 @@ public class BlogService {
 
     // Long Method Smell: handling both creation and update logic in one method
     public void createOrUpdateBlogPost(BlogPost blogPost) {
-        if (blogPost.getTitle().length() > 100) {  // Duplicated logic for length validation
+        if (blogPost.getTitle().getValue().length() > 100) {  // Duplicated logic for length validation
             throw new IllegalArgumentException("Title cannot exceed 100 characters");
         }
         if (blogPost.getId() == null) {
@@ -36,7 +37,7 @@ public class BlogService {
     }
 
     // Feature envy: The service is directly manipulating the domain object
-    public void updateBlogPostAuthor(Long id, String author) {
+    public void updateBlogPostAuthor(Long id, Author author) {
         BlogPost blogPost = blogPostRepository.findById(id).get();
         blogPost.setAuthor(author);
         blogPost.setViews(blogPost.getViews() + 10); // Feature envy: should be done in BlogPost class
