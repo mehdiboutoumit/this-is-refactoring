@@ -4,6 +4,7 @@ package com.mehdirefactoring.com.thisisrefactoring.service;
 import com.mehdirefactoring.com.thisisrefactoring.auth.AuthenticationMethod;
 import com.mehdirefactoring.com.thisisrefactoring.auth.UsernamePasswordAuthentication;
 import com.mehdirefactoring.com.thisisrefactoring.model.User;
+import com.mehdirefactoring.com.thisisrefactoring.model.valueobject.UserUpdateRequest;
 import com.mehdirefactoring.com.thisisrefactoring.repository.UserRepository;
 import com.mehdirefactoring.com.thisisrefactoring.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // Data clumps smell here: userId, username and email are usually passed together
-    public void updateUser(Long userId, String username, String email) {
+    //  Introduce Parameter Object Refactoring technique
+    public void updateUser(Long userId, UserUpdateRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         // Update the user details
-        user.setUsername(username);
-        user.setEmail(email);
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
         userRepository.save(user);
     }
 }
