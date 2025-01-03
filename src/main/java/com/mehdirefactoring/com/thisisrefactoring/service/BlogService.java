@@ -17,23 +17,38 @@ public class BlogService {
     @Autowired
     private NotificationService notificationService;
 
-    // Long Method Smell: handling both creation and update logic in one method
+    // Extract Function Refactoring technique
     public void createOrUpdateBlogPost(BlogPost blogPost) {
-        if (blogPost.getTitle().getValue().length() > 100) {  // Duplicated logic for length validation
+        validateBlogPost(blogPost);
+
+        if (blogPost.getId() == null) {
+            createBlogPost(blogPost);
+        } else {
+            updateBlogPost(blogPost);
+        }
+    }
+
+    private void validateBlogPost(BlogPost blogPost) {
+        if (blogPost.getTitle().getValue().length() > 100) {
             throw new IllegalArgumentException("Title cannot exceed 100 characters");
         }
-        if (blogPost.getId() == null) {
-            blogPostRepository.save(blogPost);
-        } else {
-            BlogPost existingPost = blogPostRepository.findById(blogPost.getId()).orElse(null);
-            if (existingPost != null) {
-                existingPost.setTitle(blogPost.getTitle());
-                existingPost.setContent(blogPost.getContent());
-                existingPost.setAuthor(blogPost.getAuthor());
-                existingPost.setCategory(blogPost.getCategory());
-                blogPostRepository.save(existingPost);
-            }
+    }
+
+    private void createBlogPost(BlogPost blogPost) {
+        blogPostRepository.save(blogPost);
+    }
+
+    private void updateBlogPost(BlogPost blogPost) {
+        BlogPost existingPost = blogPostRepository.findById(blogPost.getId()).orElse(null);
+        if (existingPost == null) {
+            throw new IllegalArgumentException("Blog post not found for update");
         }
+
+        existingPost.setTitle(blogPost.getTitle());
+        existingPost.setContent(blogPost.getContent());
+        existingPost.setAuthor(blogPost.getAuthor());
+        existingPost.setCategory(blogPost.getCategory());
+        blogPostRepository.save(existingPost);
     }
 
     // Feature envy: The service is directly manipulating the domain object
