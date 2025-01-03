@@ -82,9 +82,8 @@ public class BlogService {
     }
 
     public BlogPost processAndSaveBlogPost(BlogPost blogPost) {
-        // Temporary field code smell
-        String temporaryState = formatBlogPostContent(blogPost);
-        blogPost.setContent(temporaryState);
+        //  Inline Variable Refactoring technique
+        blogPost.setContent(formatBlogPostContent(blogPost));
         return blogPostRepository.save(blogPost);
     }
 

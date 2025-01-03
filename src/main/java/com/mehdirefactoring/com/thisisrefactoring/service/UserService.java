@@ -21,7 +21,7 @@ public class UserService {
         return username.equals("admin") && password.equals("password");
     }
 
-    
+
     // Introduce Utility Method to avoid duplicated validation logic
     public void createUser(String username, String email) {
 
