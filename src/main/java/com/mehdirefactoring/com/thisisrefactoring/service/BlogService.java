@@ -1,5 +1,6 @@
 package com.mehdirefactoring.com.thisisrefactoring.service;
 
+import com.mehdirefactoring.com.thisisrefactoring.notification.*;
 import com.mehdirefactoring.com.thisisrefactoring.utils.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,8 @@ public class BlogService {
 
     @Autowired
     private NotificationService notificationService;
+
+
 
     // Extract Function Refactoring technique
     public void createOrUpdateBlogPost(BlogPost blogPost) {
@@ -57,9 +60,7 @@ public class BlogService {
         blogPostRepository.save(blogPost);
     }
 
-    // Shotgun Surgery code smell
-    // If we add a new type of notification we need to apply the changes
-    // in too many places
+
     public BlogPost publishBlogPost(BlogPost blogPost) {
         // Magic Number code smell
         if (blogPost.getContent().length() < 100) { // Magic number: 100
@@ -68,11 +69,15 @@ public class BlogService {
         // Save the blog post
         BlogPost savedPost = blogPostRepository.save(blogPost);
 
-        // Lack of Separation of Concerns
-        // Explicitly call each notification method (Shotgun Surgery)
-        notificationService.sendEmailNotification(savedPost);
-        notificationService.sendSmsNotification(savedPost);
-        notificationService.sendPushNotification(savedPost);
+        // Observer Pattern
+        // Use NotificationManager to decouple notification logic
+        List<Notification> notifications = List.of(
+                new EmailNotification(),
+                new SmsNotification(),
+                new PushNotification()
+        );
+        NotificationManager notificationManager = new NotificationManager(notifications);
+        notificationManager.notifyAll(savedPost);
 
         return savedPost;
     }
